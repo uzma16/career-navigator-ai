@@ -115,7 +115,7 @@ function LandingPage() {
         />
 
         <div className="relative mx-auto max-w-[1400px] px-6 pt-12 pb-16 lg:px-10 lg:pt-16">
-          <div className="grid items-start gap-16 lg:grid-cols-[1.05fr_1fr]">
+          <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_1fr]">
             {/* left column */}
             <motion.div
               initial="hidden"
@@ -129,7 +129,7 @@ function LandingPage() {
 
               <motion.h1
                 variants={fadeInUp}
-                className="mt-8 font-display text-[56px] leading-[1.02] text-foreground sm:text-[72px] lg:text-[88px]"
+                className="mt-8 font-display text-[52px] leading-[1.04] text-foreground sm:text-[68px] lg:text-[80px]"
               >
                 The career{" "}
                 <em className="text-primary">operating system</em>{" "}
