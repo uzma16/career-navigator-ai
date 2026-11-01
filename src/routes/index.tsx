@@ -2,301 +2,401 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   TrendingUp,
-  Brain,
   Target,
+  Map,
   Briefcase,
-  ChevronRight,
-  Sparkles,
-  Award,
-  Zap,
+  MessagesSquare,
   BarChart3,
+  ArrowRight,
 } from "lucide-react";
-import heroBg from "../assets/hero-bg.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AI Career Wealth Engine — Discover Your Highest-Paying Career Path" },
-      { name: "description", content: "AI-powered career growth platform that analyzes your skills, experience, and goals to recommend the highest-paying career paths and personalized learning roadmaps." },
-      { property: "og:title", content: "AI Career Wealth Engine" },
-      { property: "og:description", content: "Discover your highest-paying career path with AI-powered analysis." },
+      { title: "Arcly — The Career Operating System" },
+      { name: "description", content: "Arcly reads your resume, scores your market value, closes your skill gaps, and rehearses your interviews — so every week your salary ceiling moves up, not sideways." },
+      { property: "og:title", content: "Arcly — The career operating system for what you'll become." },
+      { property: "og:description", content: "Score your market value, close your skill gaps, and rehearse your interviews with Arcly." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: LandingPage,
 });
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 };
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-};
+/* ---------- Score ring (78% arc) ---------- */
+function ScoreRing() {
+  const r = 104;
+  const c = 2 * Math.PI * r;
+  const pct = 0.78;
+  return (
+    <div className="relative mx-auto h-[260px] w-[260px]">
+      <svg viewBox="0 0 260 260" className="h-full w-full -rotate-90">
+        <circle cx="130" cy="130" r={r} fill="none" strokeWidth="18" className="stroke-[oklch(0.90_0.02_95)]" />
+        <circle
+          cx="130"
+          cy="130"
+          r={r}
+          fill="none"
+          strokeWidth="18"
+          strokeLinecap="round"
+          strokeDasharray={`${c * pct} ${c}`}
+          className="stroke-primary"
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="font-display text-7xl leading-none text-foreground">78</span>
+        <span className="mt-2 font-mono text-[11px] tracking-[0.25em] text-muted-foreground">CAREER VALUE</span>
+      </div>
+    </div>
+  );
+}
+
+const heroAvatars = [
+  "https://i.pravatar.cc/72?img=32",
+  "https://i.pravatar.cc/72?img=47",
+  "https://i.pravatar.cc/72?img=12",
+];
 
 function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={heroBg}
-            alt=""
-            className="h-full w-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-deep/40 to-transparent" />
+    <div className="min-h-screen bg-background text-foreground">
+      {/* ============================= NAV ============================= */}
+      <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+        <div className="mx-auto flex h-[76px] max-w-[1400px] items-center justify-between px-6 lg:px-10">
+          <Link to="/" className="flex items-baseline gap-1">
+            <span className="font-display text-3xl leading-none text-foreground">Arcly</span>
+            <span className="text-lg text-primary">•</span>
+          </Link>
+
+          <nav className="hidden items-center gap-10 md:flex">
+            <a href="#loops" className="text-[15px] text-foreground/80 transition-colors hover:text-foreground">Product</a>
+            <a href="#loops" className="text-[15px] text-foreground/80 transition-colors hover:text-foreground">How it works</a>
+            <Link to="/signup" className="text-[15px] text-foreground/80 transition-colors hover:text-foreground">Pricing</Link>
+            <Link to="/signup" className="text-[15px] text-foreground/80 transition-colors hover:text-foreground">Stories</Link>
+          </nav>
+
+          <div className="flex items-center gap-6">
+            <Link to="/login" className="hidden text-[15px] text-foreground/80 transition-colors hover:text-foreground sm:block">
+              Sign in
+            </Link>
+            <Link
+              to="/signup"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-[15px] font-medium text-primary-foreground transition-all hover:opacity-90"
+            >
+              Get started
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
+      </header>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-          <motion.div
-            className="max-w-3xl"
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp} className="mb-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 text-sm font-medium text-gold">
-                <Sparkles className="h-3.5 w-3.5" />
-                AI-Powered Career Intelligence
-              </span>
-            </motion.div>
+      {/* ============================= HERO ============================= */}
+      <section className="relative overflow-hidden">
+        {/* faint editorial grid */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, var(--color-border) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border) 1px, transparent 1px)",
+            backgroundSize: "88px 88px",
+          }}
+        />
+        {/* soft glow behind the score card */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute right-[-120px] top-[-60px] h-[560px] w-[720px] rounded-full bg-white/70 blur-3xl"
+        />
 
-            <motion.h1
-              variants={fadeInUp}
-              className="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.1] text-foreground"
+        <div className="relative mx-auto max-w-[1400px] px-6 pt-12 pb-16 lg:px-10 lg:pt-16">
+          <div className="grid items-start gap-14 lg:grid-cols-[1.15fr_1fr]">
+            {/* left column */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 0.6 }}
             >
-              Discover Your{" "}
-              <span className="text-gold">Highest-Paying</span>{" "}
-              Career Path
-            </motion.h1>
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2">
+                <span className="h-2 w-2 rounded-full bg-primary" />
+                <span className="font-mono text-xs tracking-[0.12em] text-foreground/80">v1.0 · Career OS is live</span>
+              </motion.div>
 
-            <motion.p
-              variants={fadeInUp}
-              className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+              <motion.h1
+                variants={fadeInUp}
+                className="mt-8 font-display text-[52px] leading-[1.04] text-foreground sm:text-[68px] lg:text-[80px]"
+              >
+                The career{" "}
+                <em className="text-primary">operating system</em>{" "}
+                for what you'll become.
+              </motion.h1>
+
+              <motion.p variants={fadeInUp} className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                Arcly reads your resume, scores your market value, closes your skill gaps,
+                and rehearses your interviews — so every week your salary ceiling moves
+                up, not sideways.
+              </motion.p>
+
+              <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/signup"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-all hover:opacity-90"
+                >
+                  Get my Career Value Score
+                  <ArrowRight className="h-4.5 w-4.5" />
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className="inline-flex items-center rounded-full border border-foreground/25 px-8 py-4 text-base font-medium text-foreground transition-all hover:bg-secondary"
+                >
+                  See a live dashboard
+                </Link>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="mt-12 flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {heroAvatars.map((src) => (
+                    <img
+                      key={src}
+                      src={src}
+                      alt=""
+                      className="h-10 w-10 rounded-full border-2 border-background object-cover"
+                    />
+                  ))}
+                </div>
+                <p className="text-[15px] text-muted-foreground">
+                  <span className="font-semibold text-foreground">24,318 candidates</span> grew their score last month.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* right column — score card */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="relative mt-6 lg:mt-2"
             >
-              Upload your resume. Our AI analyzes your skills, experience, and goals to calculate your Career Value Score, identify skill gaps, and recommend personalized paths to maximize your salary potential.
-            </motion.p>
+              {/* floating match card */}
+              <div className="absolute -top-12 right-0 z-20 w-64 rounded-2xl border border-border bg-card p-5 shadow-[0_16px_40px_-16px_rgba(20,50,40,0.25)]">
+                <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground">MATCH · 94</p>
+                <p className="mt-1.5 font-display text-lg text-foreground">Lincar · Product Eng</p>
+                <p className="mt-1 font-mono text-sm text-foreground/85">$95k – $140k</p>
+              </div>
 
-            <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-4">
-              <Link
-                to="/signup"
-                className="inline-flex items-center gap-2 rounded-lg bg-gold px-8 py-4 text-base font-semibold text-primary-foreground transition-all hover:bg-gold-light hover:shadow-xl hover:shadow-gold/20"
-              >
-                Start Your Analysis
-                <ChevronRight className="h-5 w-5" />
-              </Link>
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-secondary/50 px-8 py-4 text-base font-medium text-foreground transition-all hover:bg-secondary"
-              >
-                <BarChart3 className="h-5 w-5" />
-                View Demo Dashboard
-              </Link>
-            </motion.div>
+              <div className="relative z-10 rounded-3xl border border-border bg-card px-8 pb-8 pt-10 shadow-[0_24px_60px_-24px_rgba(20,50,40,0.18)]">
+                <p className="font-mono text-[11px] tracking-[0.25em] text-muted-foreground">LIVE · AARAV S.</p>
+                <h2 className="mt-2 font-display text-3xl text-foreground">Career Value Score</h2>
 
-            <motion.div variants={fadeInUp} className="mt-16 flex items-center gap-8">
-              <div>
-                <p className="font-display text-3xl text-gold">$47K</p>
-                <p className="text-sm text-muted-foreground">Avg. salary increase</p>
+                <div className="mt-6">
+                  <ScoreRing />
+                  <div className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-full bg-secondary px-4 py-2">
+                    <span className="h-2 w-2 rounded-full bg-primary" />
+                    <span className="font-mono text-xs tracking-[0.08em] text-foreground/85">+6 · vs. market median</span>
+                  </div>
+                </div>
+
+                <div className="mt-8 grid grid-cols-3 gap-3">
+                  {[
+                    { label: "MARKET VALUE", value: "$132k" },
+                    { label: "DEMAND", value: "92" },
+                    { label: "READINESS", value: "66" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="rounded-xl bg-secondary px-3 py-4 text-center">
+                      <p className="font-mono text-[10px] tracking-[0.15em] text-muted-foreground">{stat.label}</p>
+                      <p className="mt-2 font-display text-2xl text-foreground">{stat.value}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="h-10 w-px bg-border" />
-              <div>
-                <p className="font-display text-3xl text-gold">12K+</p>
-                <p className="text-sm text-muted-foreground">Careers analyzed</p>
-              </div>
-              <div className="h-10 w-px bg-border" />
-              <div>
-                <p className="font-display text-3xl text-gold">94%</p>
-                <p className="text-sm text-muted-foreground">Interview success</p>
+
+              {/* floating next-action card */}
+              <div className="absolute -bottom-10 -left-6 z-20 w-72 rounded-2xl border border-border bg-card p-5 shadow-[0_16px_40px_-16px_rgba(20,50,40,0.25)] sm:-left-10">
+                <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground">NEXT ACTION</p>
+                <p className="mt-1.5 font-display text-xl leading-snug text-foreground">Close the System Design gap.</p>
+                <p className="mt-1.5 text-sm text-muted-foreground">+12 to score in 2 weeks.</p>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 bg-cream/5">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* ============================= PLACED AT ============================= */}
+      <section className="border-t border-border">
+        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-10 gap-y-4 px-6 py-9 lg:px-10">
+          <span className="font-mono text-[11px] tracking-[0.3em] text-muted-foreground">PLACED AT</span>
+          <div className="flex flex-1 flex-wrap items-center justify-between gap-x-8 gap-y-3">
+            {["Vercel", "Razorpay", "Perplexity", "Figma", "Airbnb", "Zerodha", "Google", "Stripe"].map((name) => (
+              <span key={name} className="font-display text-[22px] text-foreground/85">{name}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================= THE ARCLY OS ============================= */}
+      <section id="loops" className="border-t border-border">
+        <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-10">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="text-center mb-16"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
           >
-            <motion.h2 variants={fadeInUp} className="font-display text-4xl sm:text-5xl text-foreground">
-              Your Complete Career <span className="text-gold">Operating System</span>
+            <motion.p variants={fadeInUp} className="font-mono text-[11px] tracking-[0.3em] text-muted-foreground">
+              THE ARCLY OS
+            </motion.p>
+            <motion.h2 variants={fadeInUp} className="mt-5 max-w-3xl font-display text-[44px] leading-[1.05] text-foreground sm:text-[60px]">
+              Nine loops. One <em className="text-primary">compounding</em> career.
             </motion.h2>
-            <motion.p variants={fadeInUp} className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              From resume analysis to interview prep, every tool you need to accelerate your career growth in one powerful platform.
+            <motion.p variants={fadeInUp} className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Every module in Arcly makes the next one smarter. Your resume feeds your score,
+              your score feeds your roadmap, your roadmap feeds your mock interviews.
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* row 1 — two wide cards */}
+          <div className="mt-14 grid gap-6 md:grid-cols-2">
             {[
               {
-                icon: Brain,
-                title: "AI Career Analysis",
-                desc: "Deep AI analysis of your skills, experience, and education to calculate your market value and potential.",
+                icon: TrendingUp,
+                label: "01 · VALUE",
+                title: "A single, honest score.",
+                desc: "We benchmark your resume against 1.4M active candidates and 850K live openings to produce the Career Value Score — the number that moves offers.",
               },
               {
                 icon: Target,
-                title: "Skill Gap Detection",
-                desc: "Identify exactly what skills you're missing for your target roles and get a prioritized learning plan.",
+                label: "02 · GAPS",
+                title: "Find the two topics that matter.",
+                desc: "A radar of your skills against the target role. We rank gaps by salary impact, so you study only what pays.",
               },
+            ].map((card) => (
+              <motion.div
+                key={card.label}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                transition={{ duration: 0.5 }}
+                className="rounded-3xl border border-border bg-card p-9"
+              >
+                <div className="flex items-center gap-3">
+                  <card.icon className="h-4.5 w-4.5 text-primary" strokeWidth={1.8} />
+                  <span className="font-mono text-[11px] tracking-[0.25em] text-foreground/70">{card.label}</span>
+                </div>
+                <h3 className="mt-5 font-display text-[30px] leading-tight text-foreground">{card.title}</h3>
+                <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* row 2 — three cards */}
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            {[
               {
-                icon: TrendingUp,
-                title: "Salary Insights",
-                desc: "Real-time market data shows what you should be earning and which career moves pay the most.",
+                icon: Map,
+                label: "03 · ROADMAP",
+                title: "Ten-week roadmap, cut to the bone.",
+                desc: "Hand-picked resources, weekly milestones, and honest checkpoints.",
               },
               {
                 icon: Briefcase,
-                title: "Job Matching",
-                desc: "AI-matched job recommendations based on your profile, preferences, and growth trajectory.",
+                label: "04 · JOBS",
+                title: "Only the ones that pay.",
+                desc: "Live salary intelligence per role, per city, per stack.",
               },
               {
-                icon: Award,
-                title: "Interview Prep",
-                desc: "Personalized mock interviews, question banks, and performance feedback powered by AI.",
+                icon: MessagesSquare,
+                label: "05 · REHEARSAL",
+                title: "Mock the loop, not the vibes.",
+                desc: "Behavioural, system design, and coding — with structured feedback and a readiness meter.",
               },
-              {
-                icon: Zap,
-                title: "Learning Roadmaps",
-                desc: "Step-by-step skill-building paths with curated courses, projects, and certifications.",
-              },
-              {
-                icon: BarChart3,
-                title: "Growth Analytics",
-                desc: "Track your career score, skill progression, and salary potential over time with visual dashboards.",
-              },
-              {
-                icon: Sparkles,
-                title: "Placement Readiness",
-                desc: "Comprehensive readiness assessment that tells you exactly when you're ready to apply and succeed.",
-              },
-            ].map((feature, i) => (
+            ].map((card) => (
               <motion.div
-                key={feature.title}
+                key={card.label}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeInUp}
-                transition={{ delay: i * 0.1 }}
-                className="group rounded-2xl border border-border bg-card p-6 transition-all hover:border-gold/30 hover:shadow-lg hover:shadow-gold/5"
+                transition={{ duration: 0.5 }}
+                className="rounded-3xl border border-border bg-card p-9"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold/10 text-gold transition-colors group-hover:bg-gold group-hover:text-primary-foreground">
-                  <feature.icon className="h-6 w-6" />
+                <div className="flex items-center gap-3">
+                  <card.icon className="h-4.5 w-4.5 text-primary" strokeWidth={1.8} />
+                  <span className="font-mono text-[11px] tracking-[0.25em] text-foreground/70">{card.label}</span>
                 </div>
-                <h3 className="font-display text-xl text-card-foreground mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{feature.desc}</p>
+                <h3 className="mt-5 font-display text-[28px] leading-tight text-foreground">{card.title}</h3>
+                <p className="mt-4 leading-relaxed text-muted-foreground">{card.desc}</p>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* How It Works */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* row 3 — full width */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={staggerContainer}
-            className="text-center mb-16"
+            variants={fadeInUp}
+            transition={{ duration: 0.5 }}
+            className="mt-6 rounded-3xl border border-border bg-card p-9"
           >
-            <motion.h2 variants={fadeInUp} className="font-display text-4xl sm:text-5xl text-foreground">
-              How It <span className="text-gold">Works</span>
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Three simple steps to unlock your career potential.
-            </motion.p>
+            <div className="flex items-center gap-3">
+              <BarChart3 className="h-4.5 w-4.5 text-primary" strokeWidth={1.8} />
+              <span className="font-mono text-[11px] tracking-[0.25em] text-foreground/70">06 · OPS</span>
+            </div>
+            <h3 className="mt-5 font-display text-[30px] leading-tight text-foreground">One board for every offer in motion.</h3>
+            <p className="mt-4 max-w-3xl leading-relaxed text-muted-foreground">
+              Track every stage — from applied to negotiation — with reminders that respect your calendar and follow-ups written for you.
+            </p>
           </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Upload Your Resume",
-                desc: "Upload your resume or manually enter your skills, education, and experience. Our AI parses and structures everything.",
-              },
-              {
-                step: "02",
-                title: "Get Your Analysis",
-                desc: "Receive a comprehensive Career Value Score, market value estimate, skill gap analysis, and personalized recommendations.",
-              },
-              {
-                step: "03",
-                title: "Grow & Succeed",
-                desc: "Follow your custom learning roadmap, track applications, prepare for interviews, and watch your market value climb.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.step}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeInUp}
-                transition={{ delay: i * 0.2 }}
-                className="relative rounded-2xl border border-border bg-card p-8"
-              >
-                <span className="font-display text-5xl text-gold/20">{item.step}</span>
-                <h3 className="font-display text-2xl text-card-foreground mt-4 mb-3">{item.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      {/* ============================= CLOSING CTA ============================= */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-[1400px] px-6 py-24 text-center lg:px-10">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={staggerContainer}
-            className="rounded-3xl border border-gold/20 bg-gradient-to-br from-emerald-deep/60 to-emerald-rich/40 p-12 text-center"
+            transition={{ duration: 0.6 }}
           >
-            <motion.h2 variants={fadeInUp} className="font-display text-4xl sm:text-5xl text-foreground">
-              Ready to Maximize Your <span className="text-gold">Career Value</span>?
+            <motion.h2 variants={fadeInUp} className="mx-auto max-w-3xl font-display text-[44px] leading-[1.05] text-foreground sm:text-[56px]">
+              Your salary ceiling is <em className="text-primary">a decision</em> away.
             </motion.h2>
-            <motion.p variants={fadeInUp} className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
-              Join thousands of professionals who discovered their highest-paying path with AI Career Wealth Engine.
+            <motion.p variants={fadeInUp} className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
+              Get your Career Value Score in under five minutes — free.
             </motion.p>
-            <motion.div variants={fadeInUp} className="mt-8">
+            <motion.div variants={fadeInUp} className="mt-10">
               <Link
                 to="/signup"
-                className="inline-flex items-center gap-2 rounded-lg bg-gold px-10 py-4 text-lg font-semibold text-primary-foreground transition-all hover:bg-gold-light hover:shadow-xl hover:shadow-gold/20"
+                className="inline-flex items-center gap-2.5 rounded-full bg-primary px-9 py-4 text-base font-medium text-primary-foreground transition-all hover:opacity-90"
               >
-                Start Your Free Analysis
-                <ChevronRight className="h-5 w-5" />
+                Get started
+                <ArrowRight className="h-4.5 w-4.5" />
               </Link>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold">
-                <span className="font-display text-sm font-bold text-primary-foreground">W</span>
-              </div>
-              <span className="font-display text-lg text-foreground">Wealth Engine</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              AI Career Wealth Engine. Maximize your potential.
-            </p>
+      {/* ============================= FOOTER ============================= */}
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-6 py-10 sm:flex-row lg:px-10">
+          <Link to="/" className="flex items-baseline gap-1">
+            <span className="font-display text-2xl leading-none text-foreground">Arcly</span>
+            <span className="text-base text-primary">•</span>
+          </Link>
+          <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground">
+            THE CAREER OPERATING SYSTEM
+          </p>
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <Link to="/login" className="transition-colors hover:text-foreground">Sign in</Link>
+            <Link to="/signup" className="transition-colors hover:text-foreground">Get started</Link>
           </div>
         </div>
       </footer>

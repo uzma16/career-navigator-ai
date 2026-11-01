@@ -106,7 +106,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fira+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </head>
       <body>
         {children}
@@ -119,6 +119,10 @@ function RootShell({ children }: { children: ReactNode }) {
 function Header() {
   const location = useLocation();
   const isLanding = location.pathname === "/";
+
+  // The landing page renders its own editorial navigation.
+  if (isLanding) return null;
+
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isLanding ? 'bg-transparent' : 'bg-background/80 backdrop-blur-md border-b border-border'}`}>
