@@ -119,10 +119,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function Header() {
   const location = useLocation();
-  const isLanding = location.pathname === "/";
+  const hideChrome = location.pathname === "/" || location.pathname === "/login";
 
-  // The landing page renders its own editorial navigation.
-  if (isLanding) return null;
+  // The landing page renders its own editorial navigation; the sign-in page is a full-bleed split panel.
+  if (hideChrome) return null;
+
 
 
   return (
